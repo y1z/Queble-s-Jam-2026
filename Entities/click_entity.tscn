@@ -9,7 +9,7 @@ script/source = "extends Node2D
 
 @export_group(\"VARIABLES\")
 @export var is_target: bool = false
-@export var modulate_color: Color = Color.WHITE : 
+@export var modulate_color: Color = Color.WHITE:
 	set(value):
 		modulate_color = value
 		if sprite != null:
@@ -19,6 +19,7 @@ script/source = "extends Node2D
 
 var click_target: ClickTarget
 var sprite: Sprite2D
+var game_timer: GameTimer = GameTimer.new()
 
 
 func _ready() -> void:
@@ -29,11 +30,15 @@ func _ready() -> void:
 	sprite = %Sprite
 	sprite.modulate = modulate_color
 	click_target.has_been_clicked.connect(_on_has_been_clicked_on)
+	
+	game_timer.event_timing_end.connect(_on_event_timing_end)
+	game_timer.time_until_event = 1.0
+	game_timer.start_timing()
 	pass # Replace with function body.
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+	game_timer._process(delta)
 	pass
 
 
@@ -42,8 +47,13 @@ func _exit_tree() -> void:
 	click_target.has_been_clicked.disconnect(_on_has_been_clicked_on)
 
 
-func _on_has_been_clicked_on(is_target: bool) -> void:
+func _on_has_been_clicked_on(_is_target: bool) -> void:
 	prints(self.name, \"event _on_has_been_clicked_on triggered\")
+	pass
+
+
+func _on_event_timing_end() -> void:
+	modulate_color = Color.CORNFLOWER_BLUE
 	pass
 "
 
