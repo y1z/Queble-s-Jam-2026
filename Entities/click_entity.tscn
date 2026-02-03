@@ -1,0 +1,65 @@
+[gd_scene format=3 uid="uid://gihv7st6kkhx"]
+
+[ext_resource type="Texture2D" uid="uid://ccq5evgyw7lmn" path="res://Sprites/place-holders/s_black_64x64.png" id="1_fbvgn"]
+[ext_resource type="Script" uid="uid://d4gkw6ssohvno" path="res://Scripts/click_target.gd" id="2_cqctr"]
+
+[sub_resource type="GDScript" id="GDScript_fbvgn"]
+resource_name = "click_entity"
+script/source = "extends Node2D
+
+@export_group(\"VARIABLES\")
+@export var is_target: bool = false
+@export var modulate_color: Color = Color.WHITE : 
+	set(value):
+		modulate_color = value
+		if sprite != null:
+			sprite.modulate = modulate_color
+	get:
+		return modulate_color
+
+var click_target: ClickTarget
+var sprite: Sprite2D
+
+
+func _ready() -> void:
+	click_target = %Area2D as ClickTarget
+	if click_target == null:
+		printerr(\"click_target is null FIX THAT\")
+
+	sprite = %Sprite
+	sprite.modulate = modulate_color
+	click_target.has_been_clicked.connect(_on_has_been_clicked_on)
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+
+
+func _exit_tree() -> void:
+	prints(self.name, \"_exit_tree\")
+	click_target.has_been_clicked.disconnect(_on_has_been_clicked_on)
+
+
+func _on_has_been_clicked_on(is_target: bool) -> void:
+	prints(self.name, \"event _on_has_been_clicked_on triggered\")
+	pass
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0jjhe"]
+size = Vector2(64, 64)
+
+[node name="ClickEntity" type="Node2D" unique_id=293189651]
+script = SubResource("GDScript_fbvgn")
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1272358727]
+unique_name_in_owner = true
+texture = ExtResource("1_fbvgn")
+
+[node name="Area2D" type="Area2D" parent="Sprite" unique_id=862480749]
+unique_name_in_owner = true
+script = ExtResource("2_cqctr")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite/Area2D" unique_id=912432229]
+shape = SubResource("RectangleShape2D_0jjhe")
