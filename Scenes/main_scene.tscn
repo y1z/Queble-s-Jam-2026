@@ -1,23 +1,19 @@
 [gd_scene format=3 uid="uid://wk5palcrak1x"]
 
 [ext_resource type="Script" uid="uid://cqpjrb0ek3dch" path="res://Scripts/main_manager.gd" id="1_52fb6"]
-[ext_resource type="PackedScene" uid="uid://gihv7st6kkhx" path="res://Entities/click_entity.tscn" id="2_6l7je"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_52fb6"]
+size = Vector2(1249, 699)
 
 [node name="MainScene" type="Node2D" unique_id=1928998327]
 script = ExtResource("1_52fb6")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=2043462629]
 
-[node name="ClickEntity" parent="." unique_id=293189651 instance=ExtResource("2_6l7je")]
-modulate_color = Color(0.64518714, 0.121814944, 0.729157, 1)
+[node name="spawn_area" type="Area2D" parent="." unique_id=844706384]
+unique_name_in_owner = true
 
-[node name="ClickEntity2" parent="." unique_id=1277456191 instance=ExtResource("2_6l7je")]
-position = Vector2(-142, -96)
-modulate_color = Color(0.12949139, 0.36538237, 1, 1)
-
-[node name="ClickEntity3" parent="." unique_id=808159994 instance=ExtResource("2_6l7je")]
-position = Vector2(-218, 90)
-
-[node name="ClickEntity4" parent="." unique_id=307042449 instance=ExtResource("2_6l7je")]
-position = Vector2(177, 25)
-modulate_color = Color(0, 0.8, 0, 1)
+[node name="spawn_area_shape" type="CollisionShape2D" parent="spawn_area" unique_id=666029740]
+unique_name_in_owner = true
+position = Vector2(3.5, 3.5)
+shape = SubResource("RectangleShape2D_52fb6")
