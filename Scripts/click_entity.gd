@@ -14,6 +14,7 @@ var click_target: ClickTarget
 var click_target_shape: CollisionShape2D
 var sprite: Sprite2D
 var game_timer: GameTimer = GameTimer.new()
+var click_form: Enums.SpriteForms
 
 
 func _init() -> void:
@@ -50,6 +51,9 @@ func move_to(new_pos: Vector2) -> void:
 func move_to_with_offset(new_post: Vector2, offset: Vector2) -> void:
 	self.position = self.position + new_post + offset
 
+func change_to_click_form(new_form:Enums.SpriteForms) -> void:
+	sprite.texture = GameSprites.GAME_SPRITES[new_form]
+	pass
 
 func _exit_tree() -> void:
 	Debug.d_print_verbose(self.name, "_exit_tree")

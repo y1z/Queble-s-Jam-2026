@@ -15,6 +15,11 @@ run/main_scene="uid://wk5palcrak1x"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[autoload]
+
+Enums="*uid://cv4iaor48qcoc"
+GameSprites="*uid://bahkdpakckge2"
+
 [debug]
 
 gdscript/warnings/shadowed_variable=2
@@ -22,7 +27,9 @@ gdscript/warnings/shadowed_variable_base_class=2
 gdscript/warnings/shadowed_global_identifier=2
 gdscript/warnings/untyped_declaration=1
 gdscript/warnings/missing_tool=2
+gdscript/warnings/missing_await=1
 gdscript/warnings/confusable_identifier=2
+gdscript/warnings/confusable_local_usage=2
 
 [display]
 
