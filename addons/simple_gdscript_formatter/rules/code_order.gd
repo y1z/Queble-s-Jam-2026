@@ -26,6 +26,8 @@ static func apply(code: String) -> String:
 		"virtual__ready": [], # func _ready()
 		"virtual__process": [], # func _process()
 		"virtual__physics_process": [], # func _physics_process()
+		"virtual__exit_tree": [], # func _exit_tree()
+		"virtual__draw": [], # func _draw()
 		"virtual_others": [], # other virtual methods (starting with "_")
 		"custom_overridden": [], # func _custom()
 		"methods": [], # remaining methods
@@ -60,9 +62,12 @@ static func apply(code: String) -> String:
 	code = extract_and_categorize(r"func _ready", "virtual__ready", categorized_blocks, code)
 	code = extract_and_categorize(r"func _process", "virtual__process", categorized_blocks, code)
 	code = extract_and_categorize(r"func _physics_process", "virtual__physics_process", categorized_blocks, code)
+	code = extract_and_categorize(r"func _exit_tree", "virtual__exit_tree", categorized_blocks, code)
+	code = extract_and_categorize(r"func _draw", "virtual__draw", categorized_blocks, code)
+
 	code = extract_and_categorize(r"func _(input|unhandled)", "virtual_others", categorized_blocks, code)
-	code = extract_and_categorize(r"func _", "private_methods", categorized_blocks, code)
 	code = extract_and_categorize(r"func ", "methods", categorized_blocks, code)
+	code = extract_and_categorize(r"func _", "private_methods", categorized_blocks, code)
 	code = extract_and_categorize(r"class ", "subclasses", categorized_blocks, code)
 	assert(code.strip_edges() == "", "Unprocessed code:" + code + "\n Origin code:" + origin_code)
 	var result := ""

@@ -10,6 +10,19 @@ script = ExtResource("1_52fb6")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=2043462629]
 
+[node name="Control" type="Control" parent="Camera2D" unique_id=1352624544]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 600.0
+offset_top = -361.0
+offset_right = 640.0
+offset_bottom = -321.0
+
+[node name="Panel" type="Panel" parent="Camera2D/Control" unique_id=1869006371]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
 [node name="spawn_area" type="Area2D" parent="." unique_id=844706384]
 unique_name_in_owner = true
 
@@ -17,3 +30,8 @@ unique_name_in_owner = true
 unique_name_in_owner = true
 position = Vector2(3.5, 3.5)
 shape = SubResource("RectangleShape2D_52fb6")
+
+[node name="AudioListener2D" type="AudioListener2D" parent="." unique_id=176496545]
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=2064075990]
+unique_name_in_owner = true

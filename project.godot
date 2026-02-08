@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 Enums="*uid://cv4iaor48qcoc"
 GameSprites="*uid://bahkdpakckge2"
+EventBus="*uid://bqranrqslaol4"
 
 [debug]
 

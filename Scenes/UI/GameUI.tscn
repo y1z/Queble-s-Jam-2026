@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://tupqidg87ca6"]
+
+[ext_resource type="Script" uid="uid://cu0ighd4sob23" path="res://Scripts/UI/game_ui.gd" id="1_13cgw"]
+
+[node name="GameUi" type="Control" unique_id=1602915977]
+layout_mode = 3
+anchor_right = 0.14400001
+anchor_bottom = 0.28100002
+offset_right = -184.32
+offset_bottom = -202.32
+script = ExtResource("1_13cgw")
+
+[node name="main_panel" type="Panel" parent="." unique_id=967204068]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0

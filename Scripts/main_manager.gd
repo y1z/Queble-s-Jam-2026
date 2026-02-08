@@ -17,6 +17,9 @@ var spawn_area: Area2D
 var spawn_area_shape: CollisionShape2D
 var valid_spawn_locations: Array[Vector2]
 var occupied_valid_spawn_locations: Array[bool]
+var sound_effect: AudioStreamPlayer2D = null
+
+var sound = preload("uid://c3jpcvoxi7pl")
 
 
 func _ready() -> void:
@@ -24,6 +27,8 @@ func _ready() -> void:
 	click_entity_template = load("uid://gihv7st6kkhx")
 	spawn_area = % "spawn_area"
 	spawn_area_shape = spawn_area.find_child("spawn_area_shape") as CollisionShape2D
+
+	sound_effect = %AudioStreamPlayer2D
 
 	if rows < 1:
 		rows = DEFAULT_ROWS
@@ -35,25 +40,29 @@ func _ready() -> void:
 	for i in test_amount:
 		instanced_click_entities.append(click_entity_template.instantiate())
 
-	for i in test_amount:
-		var temp: ClickEntity = instanced_click_entities[i] as ClickEntity
-		# HACK to trigger the _ready function
+	# HACK to trigger the _ready function
+	for i in instanced_click_entities:
+		var temp: ClickEntity = i as ClickEntity
 		add_child(temp)
-		move_to_valid_spawn_location(temp)
 
-	### HACK need to happend after spawning the click_entities
-	var sequence_of_sprites := _create_sequence_of_sprites(GameSprites.random_sprite_form())
-	for i in instanced_click_entities.size():
-		var temp: ClickEntity = instanced_click_entities[i] as ClickEntity
-		temp.change_to_click_form(sequence_of_sprites[i])
+	EventBus.clicked_on_target.connect(_on_event_click_target)
+	generate_play_field_thing()
 	pass # Replace with function body.
 
 
-func _input(event: InputEvent) -> void:
+func _exit_tree() -> void:
+	EventBus.clicked_on_target.disconnect(_on_event_click_target)
+
+
+func _draw() -> void:
+	draw_rect(spawn_area_shape.shape.get_rect(), background_color)
+	#for i in valid_spawn_locations:
+		#draw_circle(i, 10.0, Color.AQUA)
 	pass
 
 
 func move_to_valid_spawn_location(click_entity: ClickEntity) -> void:
+	click_entity.move_to(Vector2.ZERO)
 	var has_location_been_found: bool = false;
 	var safety_count: int = 1000
 	while not (has_location_been_found) and (safety_count > 1):
@@ -113,8 +122,26 @@ func _create_sequence_of_sprites(unique_sprite_form: Enums.SpriteForms) -> Array
 	return result
 
 
-func _draw() -> void:
-	draw_rect(spawn_area_shape.shape.get_rect(), background_color)
-	#for i in valid_spawn_locations:
-		#draw_circle(i, 10.0, Color.AQUA)
+func _on_event_click_target(data: EventBus.clickedOnTargetData) -> void:
+	if data.is_target:
+		sound_effect.stream = sound
+		sound_effect.play()
+		clear_spawn_locations()
+		generate_play_field_thing()
+		#get_tree().reload_current_scene()
 	pass
+
+
+func generate_play_field_thing() -> void:
+
+	for i in instanced_click_entities:
+		var temp: ClickEntity = i as ClickEntity
+		move_to_valid_spawn_location(temp)
+	### HACK need to happend after spawning the click_entities
+	var sequence_of_sprites := _create_sequence_of_sprites(GameSprites.random_sprite_form())
+	for i in instanced_click_entities.size():
+		var temp: ClickEntity = instanced_click_entities[i] as ClickEntity
+		temp.change_to_click_form(sequence_of_sprites[i])
+
+	var selected_traget := instanced_click_entities[instanced_click_entities.size() - 1] as ClickEntity
+	selected_traget.is_target = true
