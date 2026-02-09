@@ -1,6 +1,10 @@
 [gd_scene format=3 uid="uid://wk5palcrak1x"]
 
 [ext_resource type="Script" uid="uid://cqpjrb0ek3dch" path="res://Scripts/main_manager.gd" id="1_52fb6"]
+[ext_resource type="Script" uid="uid://cu0ighd4sob23" path="res://Scripts/UI/game_ui.gd" id="2_6l7je"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6l7je"]
+bg_color = Color(0.23069692, 0.43284336, 0.50184846, 1)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_52fb6"]
 size = Vector2(1249, 699)
@@ -11,17 +15,57 @@ script = ExtResource("1_52fb6")
 [node name="Camera2D" type="Camera2D" parent="." unique_id=2043462629]
 
 [node name="Control" type="Control" parent="Camera2D" unique_id=1352624544]
+unique_name_in_owner = true
 layout_mode = 3
 anchors_preset = 0
-offset_left = 600.0
+offset_left = 586.0
 offset_top = -361.0
 offset_right = 640.0
-offset_bottom = -321.0
+offset_bottom = -302.0
+script = ExtResource("2_6l7je")
 
-[node name="Panel" type="Panel" parent="Camera2D/Control" unique_id=1869006371]
+[node name="PanelContainer" type="PanelContainer" parent="Camera2D/Control" unique_id=1152107493]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = -24.0
+offset_top = 4.0
+offset_right = 50.0
+offset_bottom = 76.0
+
+[node name="Panel" type="Panel" parent="Camera2D/Control/PanelContainer" unique_id=1869006371]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_6l7je")
+
+[node name="TextureRect" type="TextureRect" parent="Camera2D/Control/PanelContainer/Panel" unique_id=1760685491]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 53.0
+offset_bottom = 41.0
+
+[node name="Label" type="Label" parent="Camera2D/Control/PanelContainer/Panel" unique_id=2092539784]
+layout_mode = 0
+offset_left = -5.0
+offset_top = 72.0
+offset_right = 71.0
+offset_bottom = 95.0
+theme_override_font_sizes/font_size = 12
+text = "find them"
+
+[node name="time lable" type="Label" parent="Camera2D/Control/PanelContainer/Panel" unique_id=1259869215]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = -3.0
+offset_top = 89.0
+offset_right = 37.0
+offset_bottom = 112.0
+text = "Time ="
+
+[node name="score label" type="Label" parent="Camera2D/Control/PanelContainer/Panel" unique_id=1560569000]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = -113.0
+offset_right = -73.0
+offset_bottom = 23.0
 
 [node name="spawn_area" type="Area2D" parent="." unique_id=844706384]
 unique_name_in_owner = true

@@ -2,6 +2,7 @@ extends Node2D
 
 const DEFAULT_COLUMNS: int = 10
 const DEFAULT_ROWS: int = 10
+const DEFAULT_TIMER_TIME: float = 15.0
 
 @export_group("VARIABLES")
 @export var columns: int
@@ -18,6 +19,9 @@ var spawn_area_shape: CollisionShape2D
 var valid_spawn_locations: Array[Vector2]
 var occupied_valid_spawn_locations: Array[bool]
 var sound_effect: AudioStreamPlayer2D = null
+var game_ui: GameUI
+var game_timer: GameTimer
+var score : int = 0
 
 var sound = preload("uid://c3jpcvoxi7pl")
 
@@ -27,7 +31,8 @@ func _ready() -> void:
 	click_entity_template = load("uid://gihv7st6kkhx")
 	spawn_area = % "spawn_area"
 	spawn_area_shape = spawn_area.find_child("spawn_area_shape") as CollisionShape2D
-
+	game_ui = %Control as GameUI
+	assert(game_ui != null)
 	sound_effect = %AudioStreamPlayer2D
 
 	if rows < 1:
@@ -35,6 +40,9 @@ func _ready() -> void:
 	if columns < 1:
 		columns = DEFAULT_COLUMNS
 
+	game_timer = GameTimer.new()
+	game_timer.time_until_event = DEFAULT_TIMER_TIME
+	game_timer.event_timing_end.connect(on_event_game_timer_end) ;
 	_create_valid_location(columns, rows, spawn_area_shape.shape.get_rect())
 
 	for i in test_amount:
@@ -48,6 +56,12 @@ func _ready() -> void:
 	EventBus.clicked_on_target.connect(_on_event_click_target)
 	generate_play_field_thing()
 	pass # Replace with function body.
+
+
+func _process(delta: float) -> void:
+	game_timer.start_timing()
+	game_timer._process(delta)
+	game_ui.update_proccess_label(game_timer.time_until_event - game_timer.current_delta_time)
 
 
 func _exit_tree() -> void:
@@ -128,6 +142,8 @@ func _on_event_click_target(data: EventBus.clickedOnTargetData) -> void:
 		sound_effect.play()
 		clear_spawn_locations()
 		generate_play_field_thing()
+		score = score + 10
+		game_ui.update_score_label(score)
 		#get_tree().reload_current_scene()
 	pass
 
@@ -138,10 +154,19 @@ func generate_play_field_thing() -> void:
 		var temp: ClickEntity = i as ClickEntity
 		move_to_valid_spawn_location(temp)
 	### HACK need to happend after spawning the click_entities
-	var sequence_of_sprites := _create_sequence_of_sprites(GameSprites.random_sprite_form())
+	var sprite_for_to_look_for := GameSprites.random_sprite_form()
+	game_ui.change_sprite_for(sprite_for_to_look_for)
+	var sequence_of_sprites := _create_sequence_of_sprites(sprite_for_to_look_for)
 	for i in instanced_click_entities.size():
 		var temp: ClickEntity = instanced_click_entities[i] as ClickEntity
 		temp.change_to_click_form(sequence_of_sprites[i])
+		temp.is_target = false
 
 	var selected_traget := instanced_click_entities[instanced_click_entities.size() - 1] as ClickEntity
 	selected_traget.is_target = true
+
+
+func on_event_game_timer_end() -> void:
+	print("end")
+	get_tree().reload_current_scene()
+	pass
